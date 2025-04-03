@@ -326,7 +326,7 @@ S7::method(ica_evaluate_comp, bulk_coexp) <- function(object,
 #' @title Run stabilised ICA with a given number of components
 #'
 #' @description
-#' ...
+#' This function runs stabilised ICA with the defined number of components.
 #'
 #' @param object The class, see [bixverse::bulk_coexp()]. You need to apply
 #' [bixverse::ica_processing()] before running this function.
@@ -448,8 +448,6 @@ S7::method(ica_stabilised_results, bulk_coexp) <- function(object,
       ica_params = ica_params
     )
   ))
-
-  print(s_combined[1:5, 1:5])
 
   # Get the component stability and centrotypes
   c(stability_scores, centrotype) %<-% .community_stability(

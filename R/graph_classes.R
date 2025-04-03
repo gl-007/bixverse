@@ -56,7 +56,15 @@ network_diffusions <- S7::new_class(
     checkmate::qassert(weighted, "B1")
     checkmate::qassert(directed, "B1")
     # Function body
-    graph <- igraph::graph_from_data_frame(edge_data_frame, directed = directed)
+    graph <- if (weighted) {
+      igraph::graph_from_data_frame(edge_data_frame, directed = directed)
+    } else {
+      igraph::graph_from_data_frame(edge_data_frame[, c("from", "to")], directed = directed)
+    }
+
+    if(!weighted)
+
+
     params <- list(
       "directed_graph" = igraph::is_directed(graph),
       "weighted_graph" = igraph::is_weighted(graph)
@@ -75,7 +83,41 @@ network_diffusions <- S7::new_class(
 
 ## methods ----
 
+### getters ----
 
+#' Get the diffusion vector
+#'
+#' @description Returns the diffusion vector if you ran [bixverse::tied_diffusion()]
+#' or [bixverse::diffuse_seed_nodes()].
+#'
+#' @param object The underlying class [bixverse::network_diffusions()].
+#'
+#' @return The diffusion vector if found. If you did not run either diffusion
+#' functions, it will return `NULL` and a warning.
+#'
+#' @export
+get_diffusion_vector <- S7::new_generic(
+  name = "get_diffusion_vector",
+  dispatch_args = "object",
+  fun = function(object) {
+    S7::S7_dispatch()
+  }
+)
+
+#' @export
+#'
+#' @importFrom magrittr `%>%`
+#'
+#' @method get_diffusion_vector network_diffusions
+S7::method(get_diffusion_vector, network_diffusions) <- function(object) {
+  # Checks
+  checkmate::assertClass(object, "bixverse::network_diffusions")
+  # Get the data
+  diffusion_vec <- S7::prop(object, "diffusion_res")
+  if (is.null(diffusion_vec))
+    warning("No diffusion results found. Returning NULL.")
+  diffusion_vec
+}
 
 # rbh_graphs ----
 

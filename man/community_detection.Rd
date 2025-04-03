@@ -6,11 +6,8 @@
 \usage{
 community_detection(
   object,
-  diffusion_threshold,
-  max_nodes = 300L,
-  min_nodes = 10L,
-  min_seed_nodes = 2L,
-  intial_res = 0.5,
+  diffusion_threshold = 0.25,
+  community_params = params_community_detection(),
   seed = 42L,
   .verbose = FALSE,
   .max_iters = 100L
@@ -19,31 +16,31 @@ community_detection(
 \arguments{
 \item{object}{The underlying class \code{\link[=network_diffusions]{network_diffusions()}}.}
 
-\item{diffusion_threshold}{How much of the network to keep based on the
-diffusion values. 0.25 for example would keep the 25\% nodes with the highest
-scores.}
+\item{diffusion_threshold}{Float. How much of the network to keep based on
+the diffusion values. 0.25 for example would keep the 25\% nodes with the
+highest scores. This was the default in the original paper.}
 
-\item{max_nodes}{Number of max genes per community. Communities that are
-larger than that will be further subclustered.}
-
-\item{min_nodes}{Number of minimum nodes per community. Smaller communities
-will be removed.}
-
-\item{min_seed_nodes}{Number of minimum seed nodes per community to be kept.
-In the case of a tied diffusion, this number must be reached by both initial
-seed gene vectors.}
-
-\item{intial_res}{Initial resolution parameter for the Leiden community
-detection.}
+\item{community_params}{List. Parameters for the community detection within
+the reduced network, see \code{\link[=params_community_detection]{params_community_detection()}}. A list
+with the following items:
+\itemize{
+\item max_nodes - Integer. Number of maximum nodes per community. Larger
+communities will be recursively subclustered.
+\item min_nodes - Integer. Minimum number of nodes per community.
+\item min_seed_nodes - Integer. Minimum number of seed genes that have to
+be found in a given community.
+\item initial_res - Float. Initial resolution parameter for the Leiden
+clustering.
+}}
 
 \item{seed}{Random seed.}
 
 \item{.verbose}{Controls the verbosity of the function.}
 
 \item{.max_iters}{Controls how many iterations shall be tried for the
-subclustering. To note, in each iteration of the subclustering, the
+sub-clustering. To note, in each iteration of the sub-clustering, the
 resolution parameter is increased by 0.05, to identify more granular
-communities.}
+communities within the sub communities.}
 }
 \value{
 The class with added diffusion community detection results (if any

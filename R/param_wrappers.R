@@ -149,3 +149,36 @@ params_graph_resolution <- function(min_res = 0.1,
     number_res = number_res
   ))
 }
+
+## community detections --------------------------------------------------------
+
+#' Wrapper function to generate community detection parameters
+#'
+#' @param max_nodes Integer. Maximum number of nodes in a given community.
+#' @param min_nodes Integer. Minimum number of nodes in a given community.
+#' @param min_seed_nodes Integer. Minimum number of seed nodes within a
+#' community.
+#' @param initial_res Float. Initial resolution parameter to start with.
+#'
+#' @returns List with parameters for usage in subsequent function.
+#'
+#' @export
+params_community_detection <- function(max_nodes = 300L,
+                                       min_nodes = 10L,
+                                       min_seed_nodes = 2L,
+                                       initial_res = 0.5) {
+  # Checks
+  checkmate::qassert(max_nodes, sprintf("I1[%i,)", min_nodes))
+  checkmate::qassert(min_nodes, "I1")
+  checkmate::qassert(min_seed_nodes, "I1")
+  checkmate::qassert(initial_res, "N1")
+  # Return
+  return(
+    list(
+      max_nodes = max_nodes,
+      min_nodes = min_nodes,
+      min_seed_nodes = min_seed_nodes,
+      initial_res = initial_res
+    )
+  )
+}

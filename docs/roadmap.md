@@ -1,6 +1,6 @@
 # *bixverse* roadmap
 
-*Last update: 26.03.2025* </br>
+*Last update: 29.03.2025* </br>
 
 The idea is to over time implement more and more functionalities that are deemed
 useful and asked by the users of this package. We wish to avoid implementing
@@ -15,6 +15,7 @@ core function/methods that are broadly used.
 
 - Various vignettes for workflows and (more) detailed documentation in terms of 
 method implementation.
+- Further code refactoring to ensure addition of parameters everywhere necessary.
 
 ## General methods
 
@@ -34,7 +35,7 @@ correlation based one), akin to [WGCNA](https://bmcbioinformatics.biomedcentral.
 - Hierarchical clustering-based gene module detection on top of correlation-based
 methods.
 - Interpretation layers on top of gene modules, i.e., upstream regulators, 
-annotations of modules, etc.
+annotations of modules (wrappers over pathway enrichment function), etc.
 - [Reciprocal best hit graphs based on correlation](https://academic.oup.com/bioinformatics/article/35/21/4307/5426054) 
 structure of gene loadings for matrix factorisation-based co-expression module detection.
 - Implement [sparse dictionary learning](https://pubmed.ncbi.nlm.nih.gov/35085500/)
@@ -55,5 +56,5 @@ local infrastructure. Core functionality to be implemented:
 - Rapid kNN (sNN?) graph generation for community detection and 2D visualisations
 - Wrappers to quickly do (pseudo-bulked) DGE via appropriate methods and Wilcox-
 based DGEs.
-- Wrappers to provide guidelines on coexpression module detection and upstream
+- Wrappers to provide guidelines on co-expression module detection and upstream
 regulator prediction (e.g. [hdWGCNA](https://smorabit.github.io/hdWGCNA)).

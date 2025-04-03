@@ -339,6 +339,7 @@ cor_module_check_res <- S7::new_generic(
 #'
 #' @importFrom magrittr `%>%`
 #' @importFrom zeallot `%->%`
+#' @importFrom future plan multisession sequential
 #' @import data.table
 #'
 #' @method cor_module_check_res bulk_coexp
@@ -354,7 +355,7 @@ S7::method(cor_module_check_res, bulk_coexp) <- function(object,
   # Checks
   checkmate::assertClass(object, "bixverse::bulk_coexp")
   assertCorGraphParams(graph_params)
-  assertCorResParams(resolution_params)
+  assertGraphResParams(resolution_params)
   checkmate::qassert(min_genes, "I1")
   checkmate::qassert(parallel, "B1")
   checkmate::qassert(max_workers, "I1")
@@ -398,11 +399,7 @@ S7::method(cor_module_check_res, bulk_coexp) <- function(object,
     if (.verbose)
       message(sprintf("Using parallel computation over %i cores.", max_workers))
 
-    # future plan funkiness
-    assign(".temp_workers", max_workers, envir = .GlobalEnv)
-    on.exit(rm(".temp_workers", envir = .GlobalEnv))
-
-    future::plan(future::multisession(workers = .temp_workers))
+    future::plan(future::multisession(workers = max_workers))
   } else {
     if (.verbose)
       message("Using sequential computation.")
@@ -702,7 +699,7 @@ S7::method(cor_module_final_modules, bulk_coexp) <- function(object,
   )
 
   S7::prop(object, "final_results") <- final_clusters_filtered
-  S7::prop(object, "params")[["module_final_gen"]] <- result_params
+  S7::prop(object, "params")[["module_final_gen"]] <- results_param
 
   return(object)
 }
@@ -934,35 +931,14 @@ S7::method(get_resolution_res, bulk_coexp) <- function(object) {
 
 ## plotting --------------------------------------------------------------------
 
-#' @title Plot the resolution results.
-#'
-#' @description
-#' Plots the resolution results (if they can be found in the class). The x-axis
-#' reflects the different resolutions and the y axis the modularity observed
-#' with that resolution.
-#'
-#' @param object The class, see [bixverse::bulk_coexp()].
-#' @param print_head Boolean. Print the Top5 resolution parameters and their
-#' meta data.
-#'
-#' @return Plots the result, if the results were found in the class. Otherwise,
-#' throws a warning and returns NULL.
-#'
-#' @export
-plot_resolution_res <- S7::new_generic(
-  name = 'plot_resolution_res',
-  dispatch_args = 'object',
-  fun = function(object, print_head = TRUE) {
-    S7::S7_dispatch()
-  }
-)
+# This one has a shared generic...
 
 #' @export
 #'
 #' @import ggplot2
 #'
 #' @method plot_resolution_res bulk_coexp
-S7::method(plot_resolution_res, bulk_coexp) <- function(object, print_head = TRUE) {
+S7::method(plot_resolution_res, bulk_coexp) <- function(object, print_head = TRUE, ...) {
   # Checks
   checkmate::assertClass(object, "bixverse::bulk_coexp")
   checkmate::qassert(print_head, "B1")
@@ -972,12 +948,9 @@ S7::method(plot_resolution_res, bulk_coexp) <- function(object, print_head = TRU
     warning("No resolution results found. Did you run cor_module_check_res()? Returning NULL.")
     return(NULL)
   }
-
   plot_df <- data.table::setorder(plot_df, -modularity)
-
   if (print_head)
     print(head(plot_df))
-
   p <- ggplot(data = plot_df,
               mapping =  aes(x = resolution, y = modularity)) +
     geom_point(
@@ -992,7 +965,6 @@ S7::method(plot_resolution_res, bulk_coexp) <- function(object, print_head = TRU
     scale_size_continuous(range = c(2, 8)) +
     labs(size = "Number of good clusters (log10)", fill = "Average cluster size (log10)") +
     ggtitle("Resolution vs. modularity", subtitle = 'With cluster number and size')
-
   p
 }
 

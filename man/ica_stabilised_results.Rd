@@ -62,5 +62,5 @@ absolute bigger tail is set to positive floats.}
 parameters added to the slots.
 }
 \description{
-...
+This function runs stabilised ICA with the defined number of components.
 }

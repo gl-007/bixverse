@@ -19,6 +19,6 @@ to the heuristic implemented in checkmate.}
 Invisibly returns the checked object if the assertion is successful.
 }
 \description{
-Checkmate extension for checking the ICA randomisation parameters
-for a version of stabilised ICA.
+Checkmate extension for asserting the ICA randomisation
+parameters for a version of stabilised ICA.
 }

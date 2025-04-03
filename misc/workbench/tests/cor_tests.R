@@ -81,8 +81,18 @@ cor_test = bulk_coexp(raw_data = data_1, meta_data = meta_data_1) %>%
   preprocess_bulk_coexp(., mad_threshold = 1) %>%
   cor_module_processing(., correlation_method = 'spearman')
 
+cor_test = cor_module_check_epsilon(cor_test)
+
+plot_epsilon_res(cor_test)
+
+options(future.globals.maxSize= 2000*1024^2)
+cor_test = cor_module_check_res(cor_test, graph_params = params_cor_graph(epsilon = 1.5))
+
+plot_resolution_res(cor_test)
+
 devtools::load_all()
-devtools::document()
+
+cor_test = cor_module_final_modules(cor_test)
 
 cor_test = bulk_coexp(raw_data = data_2, meta_data = meta_data_2) %>%
   preprocess_bulk_coexp(., mad_threshold = 1) %>%

@@ -4,15 +4,42 @@
 \alias{find_rbh_communities}
 \title{Find RBH communities}
 \usage{
-find_rbh_communities(object)
+find_rbh_communities(
+  object,
+  resolution_params = params_graph_resolution(),
+  max_workers = as.integer(parallel::detectCores()/2),
+  parallel = TRUE,
+  random_seed = 42L,
+  .verbose = TRUE
+)
 }
 \arguments{
 \item{object}{The underlying class, see \code{\link[=rbh_graph]{rbh_graph()}}.}
+
+\item{resolution_params}{List. Parameters for the resolution search, see
+\code{\link[=params_graph_resolution]{params_graph_resolution()}}. Contains:
+\itemize{
+\item min_res - Float. Minimum resolution to test.
+\item max_res - Float. Maximum resolution to test.
+\item number_res - Integer. Number of resolutions to test between the
+\code{max_res} and \code{min_res.}
+}}
+
+\item{max_workers}{Integer. Number of maximum cores to use. Defaults to half
+of the identified cores.}
+
+\item{parallel}{Boolean. Shall the resolution search be in parallel.}
+
+\item{random_seed}{Integer. Random seed for reproducibility.}
+
+\item{.verbose}{Boolean. Controls verbosity of the function.}
 }
 \value{
 The class with added community detection results.
 }
 \description{
-This is the generic function for identifying communities on top of an RBH
-graph.
+This function will identify communities in the reciprocal best hit (RBH)
+graph. It will iterate through resolutions and add the results to the
+class. Additionally, a column will be added that signifies the resolution
+with the best modularity.
 }

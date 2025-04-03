@@ -25,9 +25,12 @@ Imports:
     matrixStats,
     patchwork,
     purrr,
+    furrr,
+    future,
     R6,
     rextendr,
     rlang,
     S7,
     zeallot,
     MASS
+Suggests: tinytest
