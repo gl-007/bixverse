@@ -26,6 +26,21 @@ bunch of further help written [here](https://extendr.github.io/rextendr/index.ht
 by the rextendr guys in terms of Rust set up. (bixverse uses rextendr to interface
 with Rust.)
 
+Steps for installation: 
+1. in the terminal, install [Rust](https://www.rust-lang.org/tools/install) 
+
+   ```curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh```
+   
+2. in R, install [rextendr](https://extendr.github.io/rextendr/index.html):
+
+   ```install.packages("rextendr")```
+
+3. Finally install bixverse:
+
+   ```devtools::install_github("https://github.com/GregorLueg/bixverse")```
+
+
+
 ## *Docs*
 
 - [Why Rust](/docs/why_rust.md)
