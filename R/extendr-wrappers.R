@@ -11,17 +11,17 @@
 NULL
 
 #' Run a single hypergeometric test.
-#' 
-#' @description Given a set of target genes, this is a Rust implementation of 
-#' an hypergeometric test testing for overenrichment of the target genes in the 
-#' gene sets. WARNING! Incorrect use can cause kernel crashes. Wrapper around 
+#'
+#' @description Given a set of target genes, this is a Rust implementation of
+#' an hypergeometric test testing for overenrichment of the target genes in the
+#' gene sets. WARNING! Incorrect use can cause kernel crashes. Wrapper around
 #' the Rust functions with type checks are provided in the package.
-#' 
+#'
 #' @param target_genes A character vector representing the target gene set.
 #' @param gene_sets A list of strings that represent the gene sets to test against.
-#' @param gene_universe A character vector representing the gene universe from 
+#' @param gene_universe A character vector representing the gene universe from
 #' which the target genes and gene sets are sampled from.
-#' 
+#'
 #' @return A list containing:
 #'  \itemize{
 #'   \item pvals - The p-values from the hypergeometric test
@@ -29,24 +29,24 @@ NULL
 #'   \item overlap - The size of the overlap
 #'   \item gene_set_lengths - The length of the gene sets.
 #' }
-#' 
+#'
 #' @export
 rs_hypergeom_test <- function(target_genes, gene_sets, gene_universe) .Call(wrap__rs_hypergeom_test, target_genes, gene_sets, gene_universe)
 
 #' Run a hypergeometric test over a list of target genes
-#' 
+#'
 #' @description Given a list of target gene sets, this function will test for
-#' each of the individual target genes the hypergeoemetric enrichment against 
-#' the specified gene sets. WARNING! Incorrect use can cause kernel crashes. 
-#' Wrapper around the Rust functions with type checks are provided in the 
+#' each of the individual target genes the hypergeoemetric enrichment against
+#' the specified gene sets. WARNING! Incorrect use can cause kernel crashes.
+#' Wrapper around the Rust functions with type checks are provided in the
 #' package.
-#' 
+#'
 #' @param target_genes_list A character vector representing the target gene set.
 #' @param gene_sets A list of strings that represent the gene sets to test
 #' against.
-#' @param gene_universe A character vector representing the gene universe from 
+#' @param gene_universe A character vector representing the gene universe from
 #' which the target genes and gene sets are sampled from.
-#' 
+#'
 #' @return A list containing:
 #'  \itemize{
 #'   \item pvals - The p-values from the hypergeometric test
@@ -54,20 +54,20 @@ rs_hypergeom_test <- function(target_genes, gene_sets, gene_universe) .Call(wrap
 #'   \item overlap - The size of the overlap
 #'   \item gene_set_lengths - The length of the gene sets.
 #' }
-#' 
+#'
 #' @export
 rs_hypergeom_test_list <- function(target_genes_list, gene_sets, gene_universe) .Call(wrap__rs_hypergeom_test_list, target_genes_list, gene_sets, gene_universe)
 
 #' Run hypergeometric enrichment over the gene ontology
-#' 
+#'
 #' @description This function implements a Rust version of the gene ontology
 #' enrichment with elimination: the starting point are the leafs of the
-#' ontology and hypergeometric tests will first conducted there. Should the 
+#' ontology and hypergeometric tests will first conducted there. Should the
 #' hypergeometric test p-value be below a certain threshold, the genes of that
 #' gene ontology term will be removed from all ancestors. WARNING! Incorrect
 #' use can cause kernel crashes. Wrapper around the Rust functions with type
 #' checks are provided in the package.
-#' 
+#'
 #' @param target_genes A character vector representing the target gene set.
 #' @param levels A character vector representing the levels to iterate through.
 #' The order will be the one the iterations are happening in.
@@ -79,7 +79,7 @@ rs_hypergeom_test_list <- function(target_genes_list, gene_sets, gene_universe) 
 #' applied to the ancestors.
 #' @param debug boolean that will provide additional console information for
 #' debugging purposes.
-#' 
+#'
 #' @return A list containing:
 #'  \itemize{
 #'   \item go_ids - The gene ontology identifier.
@@ -88,12 +88,12 @@ rs_hypergeom_test_list <- function(target_genes_list, gene_sets, gene_universe) 
 #'   \item overlap - The size of the overlap.
 #'   \item gene_set_lengths - The length of the gene sets.
 #' }
-#' 
+#'
 #' @export
 rs_gse_geom_elim <- function(target_genes, levels, go_obj, gene_universe_length, min_genes, elim_threshold, debug) .Call(wrap__rs_gse_geom_elim, target_genes, levels, go_obj, gene_universe_length, min_genes, elim_threshold, debug)
 
 #' Run hypergeometric enrichment a list of target genes over the gene ontology
-#' 
+#'
 #' This function implements a Rust version of the gene ontology enrichment with
 #' elimination: the starting point are the leafs of the ontology and
 #' hypergeometric tests will first conducted there. Should the hypergeometric
@@ -102,7 +102,7 @@ rs_gse_geom_elim <- function(target_genes, levels, go_obj, gene_universe_length,
 #' leverage Rust-based threading for parallel processing of a list of target
 #' genes. WARNING! Incorrect use can cause kernel crashes. Wrapper around the
 #' Rust functions with type checks are provided in the package.
-#' 
+#'
 #' @param target_genes_list A list of target genes against which to run the
 #' method.
 #' @param levels A character vector representing the levels to iterate through.
@@ -115,7 +115,7 @@ rs_gse_geom_elim <- function(target_genes, levels, go_obj, gene_universe_length,
 #' be applied to the ancestors.
 #' @param debug boolean that will provide additional console information for
 #' debugging purposes.
-#' 
+#'
 #' @return A list containing:
 #'  \itemize{
 #'   \item go_ids - The gene ontology identifier.
@@ -124,100 +124,100 @@ rs_gse_geom_elim <- function(target_genes, levels, go_obj, gene_universe_length,
 #'   \item overlap - The size of the overlap.
 #'   \item gene_set_lengths - The length of the gene sets.
 #'   \item no_test - The number of tests that were conducted against
-#'   target_gene_list. First element indicates how many values belong to the 
+#'   target_gene_list. First element indicates how many values belong to the
 #'   first target_genes set in the list, etc.
 #' }
-#' 
+#'
 #' @export
 rs_gse_geom_elim_list <- function(target_genes_list, levels, go_obj, gene_universe_length, min_genes, elim_threshold, debug) .Call(wrap__rs_gse_geom_elim_list, target_genes_list, levels, go_obj, gene_universe_length, min_genes, elim_threshold, debug)
 
 #' Fast AUC calculation
-#' 
+#'
 #' @description This function calculates rapidly AUCs based on an approximation.
-#' 
+#'
 #' @param pos_scores The scores of your hits.
 #' @param neg_scores The scores of your non-hits.
-#' @param iters Number of iterations to run the function for. 
+#' @param iters Number of iterations to run the function for.
 #' Recommended size: 10000L.
 #' @param seed Seed.
-#' 
+#'
 #' @return The AUC.
-#' 
+#'
 #' @export
 rs_fast_auc <- function(pos_scores, neg_scores, iters, seed) .Call(wrap__rs_fast_auc, pos_scores, neg_scores, iters, seed)
 
 #' Create random AUCs
-#' 
+#'
 #' @description This function creates a random set of AUCs based on a score
 #' vector and a size of the positive set. This can be used for permutation-
 #' based estimation of Z-scores and subsequently p-values.
-#' 
+#'
 #' @param score_vec The overall vector of scores.
 #' @param size_pos The size of the hits represented in the score_vec.
 #' @param random_iters Number of random AUCs to generate.
-#' @param auc_iters Number of random iterations to approximate the AUCs. 
+#' @param auc_iters Number of random iterations to approximate the AUCs.
 #' Recommended size: 10000L.
 #' @param seed Seed.
-#' 
+#'
 #' @return A vector of random AUCs based the score vector and size of the
 #' positive set.
-#' 
+#'
 #' @export
 rs_create_random_aucs <- function(score_vec, size_pos, random_iters, auc_iters, seed) .Call(wrap__rs_create_random_aucs, score_vec, size_pos, random_iters, auc_iters, seed)
 
 #' Calculate the Hedge's G effect
-#' 
+#'
 #' @description Calculates the Hedge's G effect for two sets of matrices. The
-#' function assumes that rows = samples and columns = features. 
-#' WARNING! Incorrect use can cause kernel crashes. Wrapper around the Rust 
+#' function assumes that rows = samples and columns = features.
+#' WARNING! Incorrect use can cause kernel crashes. Wrapper around the Rust
 #' functions with type checks are provided in the package.
-#' 
+#'
 #' @param mat_a The matrix of samples and features in grp A for which to
-#' calculate the Hedge's G effect. 
+#' calculate the Hedge's G effect.
 #' @param mat_b The matrix of samples and features in grp B for which to
 #' calculate the Hedge's G effect.
 #' @param small_sample_correction Shall the small sample correction be applied.
-#' 
+#'
 #' @return Returns the harmonic sum according to the OT calculation.
-#' 
+#'
 #' @export
 rs_hedges_g <- function(mat_a, mat_b, small_sample_correction) .Call(wrap__rs_hedges_g, mat_a, mat_b, small_sample_correction)
 
 #' Calculate a BH-based FDR
-#' 
-#' @description Rust implementation that will be faster if you have an 
+#'
+#' @description Rust implementation that will be faster if you have an
 #' terrifying amount of p-values to adjust.
-#' 
+#'
 #' @param pvals Numeric vector. The p-values you wish to adjust.
-#' 
+#'
 #' @return The Benjamini-Hochberg adjusted p-values.
-#' 
+#'
 #' @export
 rs_fdr_adjustment <- function(pvals) .Call(wrap__rs_fdr_adjustment, pvals)
 
 #' Generate reciprocal best hits based on set similarities
-#' 
+#'
 #' @description This function takes a nested list that contains gene modules/
 #' sets derived from various methods and generate identifies reciprocal best
 #' hits between gene modules/sets across the different origins. WARNING!
 #' Incorrect use can cause kernel crashes. Wrapper around the Rust functions
 #' with type checks are provided in the package.
-#' 
-#' @param module_list A nested named list. The outer list should contain the 
+#'
+#' @param module_list A nested named list. The outer list should contain the
 #' origin of the gene modules, the inner list the names of the gene modules and
 #' the respective genes in them.
-#' @param overlap_coefficient Shall the overlap coefficient instead of the 
+#' @param overlap_coefficient Shall the overlap coefficient instead of the
 #' Jaccard similarity be used.
-#' @param min_similarity Minimum similarity that should exist between any two 
+#' @param min_similarity Minimum similarity that should exist between any two
 #' given gene modules to actually calculate RBH pairs.
 #' @param debug Boolean Boolean that activates print messages for debugging
 #' purposes.
-#' 
+#'
 #' @return A list containing:
 #'  \itemize{
 #'   \item origin - The name of the origin of the gene modules.
 #'   \item target - The name of the target of the gene modules.
-#'   \item comparisons - Integer vector indicating how many RBH hits were 
+#'   \item comparisons - Integer vector indicating how many RBH hits were
 #'   identified in this comparison
 #'   \item origin_modules - Names of the gene modules from the origin.
 #'   \item target_modules - Names of the gene modules from the target.
@@ -380,101 +380,101 @@ rs_differential_cor <- function(x_a, x_b, spearman) .Call(wrap__rs_differential_
 rs_contrastive_pca <- function(target_covar, background_covar, target_mat, alpha, n_pcs, return_loadings) .Call(wrap__rs_contrastive_pca, target_covar, background_covar, target_mat, alpha, n_pcs, return_loadings)
 
 #' Reconstruct a matrix from a flattened upper triangle vector
-#' 
+#'
 #' @description This function takes a flattened vector of the upper triangle
 #' from a symmetric matrix (think correlation matrix) and reconstructs the full
-#' dense matrix for you. 
-#' 
-#' @param cor_vector Numeric vector. The vector of correlation coefficients 
+#' dense matrix for you.
+#'
+#' @param cor_vector Numeric vector. The vector of correlation coefficients
 #' that you want to use to go back to a dense matrix.
-#' @param shift Integer. If you applied a shift, i.e. included the diagonal 
+#' @param shift Integer. If you applied a shift, i.e. included the diagonal
 #' values = 0; or excluded the diagonal values = 1.
 #' @param n Integer. Original dimension (i.e., ncol/nrow) of the matrix to be
 #' reconstructed.
-#' 
+#'
 #' @return The dense R matrix.
-#' 
+#'
 #' @export
 rs_upper_triangle_to_dense <- function(cor_vector, shift, n) .Call(wrap__rs_upper_triangle_to_dense, cor_vector, shift, n)
 
 #' Calculate the OT harmonic sum
-#' 
-#' @param x The numeric vector (should be between 0 and 1) for which to 
+#'
+#' @param x The numeric vector (should be between 0 and 1) for which to
 #' calculate the harmonic sum
-#' 
+#'
 #' @return Returns the harmonic sum according to the OT calculation.
-#' 
+#'
 #' @export
 rs_ot_harmonic_sum <- function(x) .Call(wrap__rs_ot_harmonic_sum, x)
 
 #' Apply a Radial Basis Function
-#' 
+#'
 #' @description Applies a radial basis function (RBF) to a given distance
 #' vector. Has at the moment a Gaussian version and a Bump version.
-#' 
+#'
 #' @param x Numeric vector. The distances you wish to apply the Gaussian kernel
-#' onto. 
+#' onto.
 #' @param epsilon Float. Epsilon parameter for the RBF.
 #' @param rbf_type String. Needs to be from `c("gaussian", "bump)`.
-#' 
+#'
 #' @return The affinities after the Kernel was applied.
-#' 
+#'
 #' @export
 rs_rbf_function <- function(x, epsilon, rbf_type) .Call(wrap__rs_rbf_function, x, epsilon, rbf_type)
 
 #' Apply a range normalisation on a vector.
-#' 
+#'
 #' @description Applies a range normalisation on an R vector.
-#' 
+#'
 #' @param x Numerical vector. The data to normalise.
 #' @param max_val Numeric. The upper bound value to normalise into. If set to 1,
 #' the function will be equal to a min-max normalisation.
 #' @param min_val Numeric. The lower bound value to normalise into. If set to 0,
 #' the function will equal a min-max normalisation.
-#' 
+#'
 #' @return Normalised values
-#' 
+#'
 #' @export
 rs_range_norm <- function(x, max_val, min_val) .Call(wrap__rs_range_norm, x, max_val, min_val)
 
 #' Prepare the data for whitening
-#' 
-#' @description Prepares the data for subsequent usag in ICA. 
+#'
+#' @description Prepares the data for subsequent usag in ICA.
 #' WARNING! Incorrect use can cause kernel crashes. Wrapper around the Rust
 #' functions with type checks are provided in the package.
-#' 
+#'
 #' @param x The matrix to whiten. The whitening will happen over the columns.
 #' @param fast_svd Boolean. Shall a randomised SVD be used. This is way faster
 #' on larger data sets.
 #' @param seed Integer. Only relevant with fast_svd is set to `TRUE`.
 #' @param rank Integer. How many ranks to use for the fast SVD approximation.
-#' If you supply `NULL`, it will default to `10L`. Only relevant with 
+#' If you supply `NULL`, it will default to `10L`. Only relevant with
 #' fast_svd is set to `TRUE`.
 #' @param oversampling Integer. Oversampling parameter to make the approximation
 #' more precise. If you supply `NULL`, it will default to `10L`. Only relevant
 #' with fast_svd is set to `TRUE`.
 #' @param n_power_iter Integer. How much shall the QR low rank approximation be
 #' powered. If you supply `NULL`, it will default to `2L`.
-#' 
-#' 
+#'
+#'
 #' @return A list containing:
 #'  \itemize{
 #'   \item x - The preprocessed matrix.
 #'   \item k - The pre-whitening matrix k.
 #' }
-#' 
+#'
 #' @export
 rs_prepare_whitening <- function(x, fast_svd, seed, rank, oversampling, n_power_iter) .Call(wrap__rs_prepare_whitening, x, fast_svd, seed, rank, oversampling, n_power_iter)
 
 #' Run the Rust implementation of fast ICA.
-#' 
+#'
 #' @description This function serves as a wrapper over the fast ICA
-#' implementations in Rust. It assumes a whitened matrix and also an 
+#' implementations in Rust. It assumes a whitened matrix and also an
 #' intialised w_init. WARNING! Incorrect use can cause kernel crashes. Wrapper
 #' around the Rust functions with type checks are provided in the package.
-#' 
+#'
 #' @param whiten Numerical matrix. The whitened matrix.
-#' @param w_init Numerical matrix. The initial unmixing matrix. ncols need to 
+#' @param w_init Numerical matrix. The initial unmixing matrix. ncols need to
 #' be equal to nrows of whiten.
 #' @param ica_type String. One of 'logcosh' or 'exp'.
 #' @param ica_params A list containing:
@@ -488,25 +488,25 @@ rs_prepare_whitening <- function(x, fast_svd, seed, rank, oversampling, n_power_
 #' }
 #' If the list is empty or the expected elements are not found, default values
 #' are used.
-#' 
+#'
 #' @return A list with the following items:
 #'  \itemize{
 #'   \item mixing - The mixing matrix for subsequent usage.
 #'   \item converged - Boolean if the algorithm converged.
 #' }
-#' 
+#'
 #' @export
 rs_fast_ica <- function(whiten, w_init, ica_type, ica_params) .Call(wrap__rs_fast_ica, whiten, w_init, ica_type, ica_params)
 
 #' Run ICA over a given no_comp with random initilisations of w_init
-#' 
-#' @description This function implements a stabilised ICA like algorithm in 
+#'
+#' @description This function implements a stabilised ICA like algorithm in
 #' Rust. Briefly, it generates random w_init matrices (total number being
 #' no_random_init) and runs ICA given the x_processed and k data over these.
 #' The function returns combined S from the different runs and a boolean
 #' vector indicating if this specific run converged.
-#' 
-#' @param x1 Numerical matrix. The processed matrix (but not yet 
+#'
+#' @param x1 Numerical matrix. The processed matrix (but not yet
 #' whitened!)
 #' @param k Numerical matrix. The whitening matrix.
 #' @param no_comp Integer. Number of independent components to return.
@@ -524,29 +524,29 @@ rs_fast_ica <- function(whiten, w_init, ica_type, ica_params) .Call(wrap__rs_fas
 #' }
 #' If the list is empty or the expected elements are not found, default values
 #' are used.
-#' 
+#'
 #' @return A list containing:
 #' \itemize{
-#'   \item s_combined - The combined matrices for S. Dimensions are nrows = 
+#'   \item s_combined - The combined matrices for S. Dimensions are nrows =
 #'   features; and ncols = ncomp * no_random_init.
 #'   \item converged - Boolean vector indicating if the respective run reached
 #'   convergence. Length = no_random_init
 #' }
-#' 
+#'
 #' @export
 rs_ica_iters <- function(x1, k, no_comp, no_random_init, ica_type, random_seed, ica_params) .Call(wrap__rs_ica_iters, x1, k, no_comp, no_random_init, ica_type, random_seed, ica_params)
 
 #' Run ICA with cross-validation and random initialsiation
-#' 
+#'
 #' @description This function will split the data into `no_folds` and apply
 #' ICA with `no_random_inits` over that fold.
-#' 
+#'
 #' @param x Numeric matrix. The processed data (no whitening function has
 #' been applied yet.)
 #' @param no_comp Integer. Number of components to test for.
-#' @param no_random_init Integer. Number of random initialisations. 
+#' @param no_random_init Integer. Number of random initialisations.
 #' @param no_folds Integer. Number of folds to use for the cross-validation.
-#' @param ica_type String. Which type of ICA shall be run. 
+#' @param ica_type String. Which type of ICA shall be run.
 #' @param random_seed Integer. For reproducibility.
 #' @param ica_params A list containing:
 #' \itemize{
@@ -559,17 +559,38 @@ rs_ica_iters <- function(x1, k, no_comp, no_random_init, ica_type, random_seed, 
 #' }
 #' If the list is empty or the expected elements are not found, default values
 #' are used.
-#' 
+#'
 #' @return A list containing:
 #' \itemize{
-#'   \item s_combined - The combined matrices for S. Dimensions are nrows = 
+#'   \item s_combined - The combined matrices for S. Dimensions are nrows =
 #'   features; and ncols = ncomp * no_random_init.
 #'   \item converged - Boolean vector indicating if the respective run reached
 #'   convergence. Length = no_random_init
 #' }
-#' 
+#'
 #' @export
 rs_ica_iters_cv <- function(x, no_comp, no_folds, no_random_init, ica_type, random_seed, ica_params) .Call(wrap__rs_ica_iters_cv, x, no_comp, no_folds, no_random_init, ica_type, random_seed, ica_params)
+
+#' Calculate the semantic similarity in an ontology
+#'
+#' @description This function calculates the Resnik and Lin similarity for a given ontology.
+#'
+#' @param terms Vector of strings. The terms in the ontology you wish to screen.
+#' @param ancestor_list R list with names being the term and the elements in the list the names
+#' of the ancestors.
+#' @param ic_list R list with the names being the term and the elements the information content
+#' of this given term. Needs to be a single float!
+#'
+#' @return A list with:
+#' \itemize{
+#'   \item term1 - String, the first term.
+#'   \item term2 - String, the second term.
+#'   \item resnik_sim - Float, the unnormalised Resnik similarity.
+#'   \item lin_sim - Float, the Lin similarity.
+#' }
+#'
+#' @export
+rs_onto_similarity <- function(terms, ancestor_list, ic_list) .Call(wrap__rs_onto_similarity, terms, ancestor_list, ic_list)
 
 
 # nolint end

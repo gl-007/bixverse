@@ -227,8 +227,7 @@ ica_res_rs <- fast_ica_rust(
   K,
   n_icas = 2L,
   ica_fun = "logcosh",
-  seed = 42L,
-  ica_params = list("x" = 515)
+  seed = 42L
 )
 
 par(mfcol = c(2, 3))

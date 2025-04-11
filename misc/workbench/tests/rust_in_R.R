@@ -13,12 +13,16 @@ library(magrittr)
 
 # General hypergeom tests ------------------------------------------------------
 
-protein_coding_genes <- data.table::fread("~/Desktop/protein_coding_genes.csv")
+go_data_dt <- get_go_human_data()
+
+go_data_s7 <- gene_ontology_data(go_data_dt, min_genes = 3L)
+
+protein_coding_genes <- unique(unlist(go_data_s7@go_to_genes))
 
 seed <- 123
 set.seed(seed)
 
-universe <- protein_coding_genes$id
+universe <- protein_coding_genes
 gene_sets_no <- 5000
 target_gene_sets_no <- 100
 
@@ -70,13 +74,7 @@ system.file("extdata", package = "bixverse") |> list.files()
 system.file("extdata", 'go_data_hs.parquet', package = "bixverse")
 
 
-go_data_dt <- get_go_human_data()
 
-go_data_s7 <- gene_ontology_data(go_data_dt, min_genes = 3L)
-
-names(attributes(go_data_s7))
-
-go_data_s7
 
 number_levels <- length(S7::prop(S7_obj, "levels"))
 number_gene_sets <- length(S7::prop(S7_obj, "go_to_genes"))
@@ -115,39 +113,6 @@ t4 <- gse_go_elim_method_list(
   fdr_threshold = 1
 )
 tictoc::toc()
-
-
-x = c(0, 0.1, 0.25, 1)
-
-tictoc::tic()
-rs_ot_harmonic_sum(x)
-tictoc::toc()
-
-tictoc::tic()
-ot_harmonic_score(x)
-tictoc::toc()
-
-rextendr::document()
-
-
-
-rextendr::document()
-
-
-
-y_1[1:5, 1:5]
-
-coop::pcor()
-
-tictoc::tic()
-y_2 = coop::covar(x)
-tictoc::toc()
-
-y_2[1:5, 1:5]
-
-install.packages('coop', type="source")
-
-
 
 
 

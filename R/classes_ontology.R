@@ -1,4 +1,4 @@
-# class ------------------------------------------------------------------------
+# gene ontology gene set enrichment --------------------------------------------
 
 #' Gene Ontology data
 #'
@@ -76,7 +76,7 @@ gene_ontology_data <- S7::new_class(
   }
 )
 
-# print ------------------------------------------------------------------------
+## print ------------------------------------------------------------------------
 
 #' @name print.gene_ontology_data
 #' @title print Method for gene_ontology_data object
@@ -107,3 +107,95 @@ S7::method(print, gene_ontology_data) <- function(x, ...) {
   invisible(x)
 }
 
+
+# ontology class ---------------------------------------------------------------
+
+#' Ontology class
+#'
+#' @description
+#' This class is used to store any ontology and apply different methods to it.
+#' Currently implement are semantic similarity calculations based on the
+#' ontological information.
+#'
+#' @param parent_child_dt A data.table that contains the ontological information
+#' in terms of parent child relationships. Need to contain the
+#' `c("parent", "child")` columns.
+#'
+#' @section Properties:
+#' \describe{
+#'   \item{edge_dt}{data.table. Contains the parent-child relationships.}
+#'   \item{information_content_list}{List. Contains the information content
+#'   of each individual term.}
+#'   \item{ancestor_list}{List. Contains the ancestors for each ontology term.}
+#'   \tiem{semantic_similarities}{data.table. Contains the semantic similarities
+#'   if calculated.}
+#' }
+#'
+#' @return Returns the class for subsequent usage.
+#'
+#' @export
+ontology <- S7::new_class(
+  # Names, parents
+  name = "ontology",
+
+  # Properties, i.e., slots
+  properties = list(
+    parent_child_dt = S7::class_data.frame,
+    information_content_list = S7::class_list,
+    ancestor_list = S7::class_list,
+    semantic_similarities = S7::class_data.frame
+  ),
+
+
+  constructor = function(parent_child_dt, .verbose = TRUE) {
+    # Checks
+    checkmate::assertDataTable(parent_child_dt)
+    checkmate::assert(all(c("parent", "child") %in% colnames(parent_child_dt)))
+    checkmate::qassert(.verbose, "B1")
+
+    if (.verbose)
+      message("Identifying the ancestors in the ontology.")
+    ancestor_list <- get_ontology_ancestors(parent_child_dt)
+    if (.verbose)
+      message("Calculating the information content of each term")
+    information_content <- calculate_information_content(ancestor_list)
+
+    # Finalise object
+    S7::new_object(
+      S7::S7_object(),
+      parent_child_dt = parent_child_dt,
+      information_content_list = information_content,
+      ancestor_list = ancestor_list,
+      semantic_similarities = data.table::data.table()
+    )
+  }
+)
+
+## getters ---------------------------------------------------------------------
+
+#' Get the ontology term similarities
+#'
+#' @param object `ontology class`. See [bixverse::ontology()].
+#'
+#' @return Returns the semantic similarity data.table from the class
+#'
+#' @export
+get_semantic_similarities <- S7::new_generic(
+  name = "get_semantic_similarities",
+  dispatch_args = "object",
+  fun = function(object) {
+    S7::S7_dispatch()
+  }
+)
+
+#' @export
+#'
+#' @import data.table
+#' @importFrom magrittr `%>%`
+#'
+#' @method get_semantic_similarities ontology
+S7::method(get_semantic_similarities, ontology) <-
+  function(object) {
+    ontology_sim <- S7::prop(object, "semantic_similarities")
+    return(ontology_sim)
+  }
